@@ -12,7 +12,9 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			contactInfo: [{}], //Información del contacto
+			editValue: false //Variable para verificar si se desea editar un contacto
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -37,7 +39,42 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 				//reset the global store
 				setStore({ demo: demo });
-			}
+			},
+			createAgenda: async () => {
+				try {
+					const response = await fetch('https://playground.4geeks.com/contact/agendas/yaromvp', {
+						method: "POST",
+						header: { 'Content-type': 'Application/json' }
+					}
+					)
+					if (response.status !== 201) {
+						throw new Error(`Error en la solicitud: status code ${response.status}`)
+					}
+					return true
+				} catch (error) {
+					console.log(error)
+					return false
+				}
+			},
+			createContact: () => {
+
+			},
+			getAgenda: async () => {
+				try {
+					const response = await fetch('https://playground.4geeks.com/contact/agendas/yaromvp')
+					if (response.status != 200) {
+						createAgenda()
+						throw new Error('Error en la solicitud...')
+					}
+					const agendaData = await response.json()
+					setStore({
+						contactInfo: agendaData
+					})
+				} catch (error) {
+
+					console.log(error)
+				}
+			},
 		}
 	};
 };
