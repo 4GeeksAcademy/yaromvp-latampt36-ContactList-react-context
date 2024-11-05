@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Context } from "../store/appContext";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLocationDot, faPhone, faEnvelope, faPencil, faTrashCan, faRandom } from '@fortawesome/free-solid-svg-icons'
+import { faLocationDot, faPhone, faEnvelope, faPencil, faTrashCan } from '@fortawesome/free-solid-svg-icons'
 import { Link } from "react-router-dom";
 
 export const ContactCard = (props) => {
@@ -27,12 +27,9 @@ export const ContactCard = (props) => {
         }
     }
 
-    //AQUÍ ME QUEDÉÉÉ ... Falta obtener el id del contacto y pasarlo a la otra vista
     const editClick = () => {
-        let condition = getStore();
-        alert(contition.editValue)
-        setStore({ editValue: !condition.editValue })
-        //!store.editValue ? setStore({ editValue: true }) : alert(store.editValue)
+        store.editValue = true
+        actions.getEditInfo(props.index, props.name, props.address, props.phone, props.email)
     }
 
     return (
@@ -65,9 +62,27 @@ export const ContactCard = (props) => {
                             <FontAwesomeIcon icon={faPencil} />
                         </button>
                     </Link>
-                    <button className="btn text-danger" onClick={() => deleteContact(props.index)}>
+
+                    <button className="btn text-danger" data-bs-toggle="modal" data-bs-target={`#modal${props.index}`}>
                         <FontAwesomeIcon icon={faTrashCan} />
                     </button>
+
+                    <div className="modal fade" id={`modal${props.index}`} tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div className="modal-dialog">
+                            <div className="modal-content">
+                                <div className="modal-header">
+                                    <h1 className="modal-title fs-5" id="exampleModalLabel">Are you sure?</h1>
+                                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div className="modal-body">If you continue, the <strong>{props.name}</strong> contact will be delete permanently.</div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" className="btn btn-danger" data-bs-dismiss="modal" onClick={() => deleteContact(props.index)}>Delete</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

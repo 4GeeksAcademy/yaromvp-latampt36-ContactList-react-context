@@ -14,7 +14,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			contactInfo: [{}], //Información del contacto
-			editValue: false //Variable para verificar si se desea editar un contacto
+			editValue: false, //Variable para verificar si se desea editar un contacto
+			editInfo: {} //Variable para guardar la información que se desea modificar
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -56,14 +57,11 @@ const getState = ({ getStore, getActions, setStore }) => {
 					return false
 				}
 			},
-			createContact: () => {
-
-			},
 			getAgenda: async () => {
 				try {
 					const response = await fetch('https://playground.4geeks.com/contact/agendas/yaromvp')
 					if (response.status != 200) {
-						createAgenda()
+						getActions().createAgenda()
 						throw new Error('Error en la solicitud...')
 					}
 					const agendaData = await response.json()
@@ -75,6 +73,17 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error)
 				}
 			},
+			getEditInfo: (id, name, address, phone, email) => {
+				setStore({
+					editInfo: {
+						id: id,
+						name: name,
+						address: address,
+						phone: phone,
+						email: email,
+					}
+				})
+			}
 		}
 	};
 };

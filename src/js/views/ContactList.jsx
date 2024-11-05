@@ -8,6 +8,12 @@ import { ContactCard } from "../component/ContactCard.jsx";
 export const ContactList = () => {
     const { store, actions } = useContext(Context);
 
+    useEffect(() => {
+        console.log(store.contactInfo, store.contactInfo.length)
+        store.editValue = false
+        actions.getAgenda()
+    }, [])
+
     return (
         <div className="container">
             <div className="d-md-flex justify-content-md-between mb-2">
@@ -17,11 +23,13 @@ export const ContactList = () => {
                 </Link>
             </div>
 
-            {store.contactInfo.contacts?.map((item) => {
-                return (
-                    <ContactCard index={item.id} name={item.name} address={item.address} phone={item.phone} email={item.email} />
-                )
-            })}
+            {//store.contactInfo.contacts.length === 0 ? <h4 className="text-center">No contacts here, add a new contact</h4> :
+                store.contactInfo.contacts?.map((item) => {
+                    return (
+                        <ContactCard index={item.id} name={item.name} address={item.address} phone={item.phone} email={item.email} />
+                    )
+                })
+            }
 
             <br />
             <Link to="/">
