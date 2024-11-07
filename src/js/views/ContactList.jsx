@@ -9,8 +9,6 @@ export const ContactList = () => {
     const { store, actions } = useContext(Context);
 
     useEffect(() => {
-        console.log(store.contactInfo, store.contactInfo.length)
-        store.editValue = false
         actions.getAgenda()
     }, [])
 

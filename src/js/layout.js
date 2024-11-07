@@ -10,6 +10,7 @@ import { Single } from "./views/single";
 import injectContext from "./store/appContext";
 import { ContactList } from "./views/ContactList.jsx";
 import { AddNewContact } from "./views/AddNewContact.jsx";
+import { EditContact } from "./views/EditContact.jsx";
 
 import { Navbar } from "./component/navbar";
 import { Footer } from "./component/footer";
@@ -35,7 +36,8 @@ const Layout = () => {
 						<Route path="/demo" element={<Demo />} />
 						<Route path="/single/:theid" element={<Single />} />
 						<Route path="/contact" element={<ContactList />} />
-						<Route path="/addcontact" element={<AddNewContact />} />
+						<Route path="/addcontact" element={<AddNewContact />} />						<Route path="/addcontact" element={<AddNewContact />} />
+						<Route path="/editcontact/:id" element={<EditContact />} />
 						<Route path="*" element={<h1>Not found!</h1>} />
 					</Routes>
 					<Footer />

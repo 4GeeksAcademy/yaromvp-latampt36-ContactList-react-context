@@ -1,15 +1,16 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { useParams } from 'react-router-dom';
 import { Link, useNavigate } from "react-router-dom";
-
 import { Context } from "../store/appContext";
 
-export const AddNewContact = () => {
+export const EditContact = () => {
+
     const { store, actions } = useContext(Context);
     const [nameValue, setNameValue] = useState('');
     const [emailValue, setEmailValue] = useState('');
     const [phoneValue, setPhoneValue] = useState('');
     const [addressValue, setAddressValue] = useState('');
-
+    const params = useParams()
     const navigate = useNavigate()
 
     const handleNameChange = (event) => {
@@ -32,36 +33,42 @@ export const AddNewContact = () => {
             alert("Falta rellenar algún campo")
             return
         }
-
         try {
-            const response = await fetch('https://playground.4geeks.com/contact/agendas/yaromvp/contacts', {
-                method: "POST",
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    "name": nameValue,
-                    "phone": phoneValue,
-                    "email": emailValue,
-                    "address": addressValue
-                })
-            })
-            if (response.status !== 201) {
-                throw new Error(`Error en la solicitud: status code ${response.status}`)
+            const response = await fetch(`https://playground.4geeks.com/contact/agendas/${store.contactInfo.slug}/contacts/${params.id}`,
+                {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        "name": nameValue,
+                        "phone": phoneValue,
+                        "email": emailValue,
+                        "address": addressValue
+                    })
+                }
+            )
+            if (response.status !== 200) {
+                console.log('Algo salió mal con el PUT...');
+                return
             }
-            const body = await response.json()
-            alert(`Save Successful - Name: ${body.name}, Phone: ${body.phone}, Email: ${body.email}, Address: ${body.address}`)
             await actions.getAgenda()
             navigate("/contact")
-            return true
         } catch (error) {
-            console.log(error)
-            return false
+            console.log(error);
         }
     }
+
+    useEffect(() => {
+        const found = store.contactInfo.contacts.find((item) => item.id == params.id);
+        setNameValue(found.name)
+        setEmailValue(found.email)
+        setPhoneValue(found.phone)
+        setAddressValue(found.address)
+    }, [])
 
     return (
         <div className="container">
             <form onSubmit={saveInfo}>
-                <h1 className="text-center">{store.editValue ? "Edit Contact" : "Add a New Contact"}</h1>
+                <h1 className="text-center">Edit Contact</h1>
                 <div className="mb-3">
                     <label htmlFor="inputName" className="form-label">Full Name</label>
                     <input type="text" className="form-control" id="inputName"
@@ -91,4 +98,5 @@ export const AddNewContact = () => {
             </form>
         </div>
     );
-};
+
+}

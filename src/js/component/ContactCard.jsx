@@ -27,11 +27,6 @@ export const ContactCard = (props) => {
         }
     }
 
-    const editClick = () => {
-        store.editValue = true
-        actions.getEditInfo(props.index, props.name, props.address, props.phone, props.email)
-    }
-
     return (
         <div key={props.index} className="card container border border-secondary g-0 m-0">
             <div className="row g-0 px-5">
@@ -57,8 +52,8 @@ export const ContactCard = (props) => {
                     </div>
                 </div>
                 <div className="col-md-2 d-flex justify-content-center align-items-center">
-                    <Link to="/addcontact">
-                        <button className="btn text-primary" onClick={() => editClick()}>
+                    <Link to={`/editcontact/${props.index}`}>
+                        <button className="btn text-primary">
                             <FontAwesomeIcon icon={faPencil} />
                         </button>
                     </Link>

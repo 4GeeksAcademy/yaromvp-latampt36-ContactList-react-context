@@ -14,8 +14,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			contactInfo: [{}], //Información del contacto
-			editValue: false, //Variable para verificar si se desea editar un contacto
-			editInfo: {} //Variable para guardar la información que se desea modificar
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -73,17 +71,6 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log(error)
 				}
 			},
-			getEditInfo: (id, name, address, phone, email) => {
-				setStore({
-					editInfo: {
-						id: id,
-						name: name,
-						address: address,
-						phone: phone,
-						email: email,
-					}
-				})
-			}
 		}
 	};
 };
